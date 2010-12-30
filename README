@@ -1,0 +1,69 @@
+===========================
+CCScrollLayer
+===========================
+Giv Parvaneh
+giv@givp.org
+http://www.givp.org/blog/2010/12/30/scrolling-menus-in-cocos2d/
+
+
+
+This class was originally written by DK101
+http://dk101.net/2010/11/30/implementing-page-scrolling-in-cocos2d/
+
+It is a very clean and elegant subclass of CCScrollLayer that lets you pass-in an array of layers and it will then create a smooth scroller. Complete with the "snapping" effect. You can create screens with anything that can be added to a CCLayer.
+
+It is mostly the same with the following changes:
+
+- updated to work with Cocos2d 0.99.5
+- added the option to change the width of each layer for the "Angry Birds" style preview effect
+- removed CCTouchDispatcher on exit (this was messing up touch events on other scenes)
+
+USAGE:
+
+1. add both files to your project
+2. in your scene import CCScrollLayer.h
+3. in your scene's init method construct each layer and pass it to the CCScrollLayer class:
+
+e.g.
+
+// get screen size
+CGSize screenSize = [CCDirector sharedDirector].winSize;
+
+/////////////////////////////////////////////////
+// PAGE 1
+////////////////////////////////////////////////
+// create a blank layer for page 1
+CCLayer *pageOne = [[CCLayer alloc] init];
+
+// create a label for page 1
+CCLabelTTF *label = [CCLabelTTF labelWithString:@"Page 1" fontName:@"Arial Rounded MT Bold" fontSize:44];
+label.position =  ccp( screenSize.width /2 , screenSize.height/2 );
+
+// add label to page 1 layer
+[pageOne addChild:label];
+
+/////////////////////////////////////////////////
+// PAGE 2
+////////////////////////////////////////////////
+// create a blank layer for page 2
+CCLayer *pageTwo = [[CCLayer alloc] init];
+
+// create a custom font menu for page 2
+CCLabelBMFont *tlabel = [CCLabelBMFont labelWithString:@"Page 2" fntFile:@"customfont.fnt"];
+CCMenuItemLabel *titem = [CCMenuItemLabel itemWithLabel:tlabel target:self selector:@selector(testCallback:)];
+CCMenu *menu = [CCMenu menuWithItems: titem, nil];
+menu.position = ccp(screenSize.width/2, screenSize.height/2);
+
+// add menu to page 2
+[pageTwo addChild:menu];
+////////////////////////////////////////////////
+
+// now create the scroller and pass-in the pages (set widthOffset to 0 for fullscreen pages)
+CCScrollLayer *scroller = [[CCScrollLayer alloc] initWithLayers:[NSMutableArray arrayWithObjects: pageOne,pageTwo,pageThree,nil] widthOffset: 230];
+
+// finally add the scroller to your scene
+[self addChild:scroller];
+
+
+Enjoy :)
+G
