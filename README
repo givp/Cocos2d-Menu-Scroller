@@ -10,7 +10,7 @@ http://www.givp.org/blog/2010/12/30/scrolling-menus-in-cocos2d/
 This class was originally written by DK101
 http://dk101.net/2010/11/30/implementing-page-scrolling-in-cocos2d/
 
-It is a very clean and elegant subclass of CCScrollLayer that lets you pass-in an array of layers and it will then create a smooth scroller. Complete with the "snapping" effect. You can create screens with anything that can be added to a CCLayer.
+It is a very clean and elegant subclass of CCLayer that lets you pass-in an array of layers and it will then create a smooth scroller. Complete with the "snapping" effect. You can create screens with anything that can be added to a CCLayer.
 
 It is mostly the same with the following changes:
 
