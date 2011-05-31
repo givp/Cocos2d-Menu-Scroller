@@ -53,10 +53,10 @@
 	CGFloat scrollWidth_;
 	
 	// Holds the current page being displayed.
-	NSUInteger currentScreen_;
+	int currentScreen_;
 	
 	// A count of the total screens available.
-	NSUInteger totalScreens_;
+	int totalScreens_;
 	
 	// The x coord of initial point the user starts their swipe.
 	CGFloat startSwipe_;
@@ -73,8 +73,8 @@
 }
 @property(readwrite, assign) CGFloat minimumTouchLengthToSlide;
 @property(readwrite, assign) CGFloat minimumTouchLengthToChangePage;
-@property(readonly) NSUInteger totalScreens;
-@property(readonly) NSUInteger currentScreen;
+@property(readonly) int totalScreens;
+@property(readonly) int currentScreen;
 
 +(id) nodeWithLayers:(NSArray *)layers widthOffset: (int) widthOffset; 
 -(id) initWithLayers:(NSArray *)layers widthOffset: (int) widthOffset;
