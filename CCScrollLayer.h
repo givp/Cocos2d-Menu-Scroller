@@ -41,7 +41,8 @@
 	1. Added ability to swipe above targetedTouchDelegates.
     2. Added touches lengths & screens properties.
 	3. Added factory class method.
-	3. Code cleanup.
+	4. Code cleanup.
+	5. Added current page number indicator (iOS Style Dots).
  
  Limitations: 
 	1. Mac OS X not supported.
@@ -67,12 +68,16 @@
 	// For what distance user must slide finger to change the page.
 	CGFloat minimumTouchLengthToChangePage_; 
 	
+	// Whenever show or not gray/white dots under scrolling content.
+	BOOL showPagesIndicator_;
+	
 	// Internal state of scrollLayer (scrolling or idle).
 	int state_;
 	
 }
 @property(readwrite, assign) CGFloat minimumTouchLengthToSlide;
 @property(readwrite, assign) CGFloat minimumTouchLengthToChangePage;
+@property(readwrite, assign) BOOL showPagesIndicator;
 @property(readonly) int totalScreens;
 @property(readonly) int currentScreen;
 

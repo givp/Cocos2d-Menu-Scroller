@@ -30,6 +30,7 @@
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
 #import "CCScrollLayer.h"
+#import "CCGL.h"
 
 enum 
 {
@@ -59,6 +60,7 @@ enum
 @synthesize minimumTouchLengthToChangePage = minimumTouchLengthToChangePage_;
 @synthesize totalScreens = totalScreens_;
 @synthesize currentScreen = currentScreen_;
+@synthesize showPagesIndicator = showPagesIndicator_;
 
 +(id) nodeWithLayers:(NSArray *)layers widthOffset: (int) widthOffset
 {
@@ -77,6 +79,9 @@ enum
 		// Set default minimum touch length to scroll.
 		self.minimumTouchLengthToSlide = 30.0f;
 		self.minimumTouchLengthToChangePage = 100.0f;
+		
+		// Show indicator by default.
+		self.showPagesIndicator = YES;
 		
 		// Set up the starting variables
 		currentScreen_ = 1;
@@ -107,6 +112,43 @@ enum
 -(void) registerWithTouchDispatcher
 {	
 	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:kCCMenuTouchPriority - 1 swallowsTouches:NO];
+}
+
+- (void) visit
+{
+	[super visit];//< Will draw after glPopScene. 
+	
+	if (self.showPagesIndicator)
+	{
+		// Prepare Points Array
+		CGFloat n = (CGFloat)totalScreens_; //< Total points count in CGFloat.
+		CGFloat pY = ceilf ( self.contentSize.height / 8.0f ); //< Points y-coord in parent coord sys.
+		CGFloat d = 16.0f * CC_CONTENT_SCALE_FACTOR(); //< Distance between points.
+		CGPoint points[totalScreens_];	
+		for (int i=0; i < totalScreens_; ++i)
+		{
+			CGFloat pX = 0.5f * self.contentSize.width + d * ( (CGFloat)i - 0.5f*(n-1.0f) );
+			points[i] = ccp (pX, pY);
+		}
+		
+		// Set GL Values
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+		glPointSize(6.0f * CC_CONTENT_SCALE_FACTOR());
+		
+		// Draw Gray Points
+		glColor4ub(0x96,0x96,0x96,0xFF);
+		ccDrawPoints( points, totalScreens_ );
+		
+		// Draw White Point for Selected Page
+		glColor4ub(0xFF,0xFF,0xFF,0xFF);
+		ccDrawPoint(points[currentScreen_ - 1]);
+		
+		// Restore GL Values
+		glPointSize(1.0f);
+		glHint(GL_POINT_SMOOTH_HINT,GL_FASTEST);
+		glDisable(GL_POINT_SMOOTH);
+	}
 }
 
 #pragma mark Pages Control 
