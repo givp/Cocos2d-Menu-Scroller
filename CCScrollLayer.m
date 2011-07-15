@@ -154,20 +154,14 @@ enum
 #pragma mark Pages Control 
 
 -(void) moveToPage:(int)page
-{
+{		
 	id changePage = [CCMoveTo actionWithDuration:0.3 position:ccp(-((page-1)*scrollWidth_),0)];
-    id pageMoved = [CCCallFuncN actionWithTarget:self selector:@selector(checkCallbackMethod)];
-	[self runAction:[CCSequence actions:changePage, pageMoved, nil]];
-	currentScreen_ = page;
-}
-
-#pragma mark Page Moved Callback
-
-- (void) checkCallbackMethod
-{
+    id pageMoved = [CCCallFuncN actionWithTarget:self.parent selector:@selector(scrollLayerDidScroll)];
     if ([self.parent respondsToSelector:@selector(scrollLayerDidScroll)]) 
-        [self.parent scrollLayerDidScroll];
-    
+        [self runAction:[CCSequence actions:changePage, pageMoved, nil]]; 
+	else
+        [self runAction:changePage];
+	currentScreen_ = page;
 }
 
 #pragma mark Hackish Stuff
